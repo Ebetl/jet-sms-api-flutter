@@ -1,4 +1,4 @@
-# mobil_ik
+# jet-sms-api-flutter
 
 A new Flutter project.
 
