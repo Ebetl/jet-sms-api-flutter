@@ -3,54 +3,21 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mobil_ik/Screens/Login/components/background.dart';
+import 'package:mobil_ik/Screens/Welcome/welcome_screen.dart';
 import 'package:mobil_ik/Service/service.dart';
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../components/rounded_button.dart';
 import '../../../components/rounded_input_field.dart';
 import '../../../components/rounded_password_field.dart';
-import '../../Signup/signup_screen.dart';
-import '../../Verify/verify.dart';
 
 class Body extends StatelessWidget {
   const Body({
     Key? key,
   }) : super(key: key);
 
-  get otpPin => null;
-
-  get verID => null;
-  Future<void> verifyPhone(String number, BuildContext context) async {
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: number,
-      timeout: Duration(minutes: 1),
-      verificationCompleted: (PhoneAuthCredential credential) {
-        showSnackBarText("Auth Completed!", context);
-      },
-      verificationFailed: (FirebaseAuthException e) {
-        showSnackBarText("Auth Failed!", context);
-      },
-      codeSent: (String verificationId, int? resendToken) {
-        showSnackBarText("OTP Sent", context);
-        var verID = verificationId;
-        setState(() {
-          var screenState = 1;
-        });
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {
-        showSnackBarText("Time Out!", context);
-      },
-    );
-  }
-  Future<void> verifyOTP() async {
-    await FirebaseAuth.instance.signInWithCredential(
-        PhoneAuthProvider.credential(
-            verificationId: verID, smsCode: otpPin));
-  }
   @override
   Widget build(BuildContext context) {
-    // TextEditingController usernameController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
-    // final otpController = TextEditingController();
     Size size = MediaQuery.of(context).size;
     return Background(
       child: SingleChildScrollView(
@@ -94,9 +61,10 @@ class Body extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Service().smsGonder(phoneController.text);
+                  Service().smsGonder(phoneController
+                      .text); //jet sms apiye istek atan fonksiyon
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => Verify()),
+                    MaterialPageRoute(builder: (context) => WelcomeScreen()),
                   );
                 },
                 style: ButtonStyle(
